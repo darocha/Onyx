@@ -1,0 +1,48 @@
+﻿<form id="signup-form" name="signupform" ng-submit="signup(signupform.$valid)" novalidate>
+    <div class="login-logo">&nbsp;</div>
+    <div class="login-title">Cadastre-se</div>
+    <div class="row" ng-repeat="error in errors">
+        <div class="alert alert-danger">
+            {{error}}
+        </div>
+    </div>
+    <div class="form-group" style="margin-bottom:0;">
+        <input type="text" class="form-control" ng-model="username" placeholder="Username" required name="username" ng-model-options="{ updateOn: 'default blur', debounce: { default: 2000, blur: 0 } }" username ng-minlength="3" ng-maxlength="20" />
+        <span class="glyphicon glyphicon-user icon-user" aria-hidden="true" style="font-size: 18px;color:#808080;margin-top:2px;"></span>
+        <p ng-show="signupform.username.$invalid.required && !signupform.username.$pristine && !signupform.username.$error.username" class="help-block">Seu nome é obrigatório.</p>
+        <p ng-show="signupform.username.$error.username" class="help-block">Este username já está cadastrado!</p>
+        <p ng-show="signupform.username.$error.minlength" class="help-block">Mínimo 3 caracteres.</p>
+        <p ng-show="signupform.username.$error.maxlength" class="help-block">Máximo 20 caracteres.</p>
+        <p ng-show="signupform.username.$pending.username" class="help-block">Verificando disponibilidade...</p>
+    </div>
+    <div class="form-group" style="margin-bottom:0;">
+        <input type="email" class="form-control" ng-model="email" ng-model-options="{ updateOn: 'default blur', debounce: { default: 2000, blur: 0 } }" placeholder="Email" required name="email" />
+        <span class="fa fa-at icon-at" aria-hidden="true" style="font-size: 18px;color:#808080;margin-top:2px;"></span>
+        <p ng-show="signupform.email.$invalid && !signupform.email.$pristine" class="help-block">Email inválido.</p>
+    </div>
+    <div class="form-group" style="margin-bottom:0;">
+        <input type="password" class="form-control" ng-model="password" placeholder="Senha" required name="password" ng-minlength="6" ng-maxlength="12" />
+        <span class="fa fa-lock icon-lock" style="font-size: 22px;color:#808080;margin-left:2px;margin-top:2px;"></span>
+        <p ng-show="signupform.password.$error.minlength" class="help-block">Mínimo 6 caracteres.</p>
+        <p ng-show="signupform.password.$error.maxlength" class="help-block">Máximo 12 caracteres.</p>
+        <p ng-show="signupform.password.$invalid.required" class="help-block">Senha inválida.</p>
+    </div>
+    <div class="form-group checkbox" style="padding-left: 5px;text-align:left;color:#222;font-size:13px;">
+        <label>
+            <input type="checkbox" id="signup-form-agree-with-terms" checked ng-model="agreewithterms" required name="agreewithterms" />
+            Eu concordo com os termos de uso.
+        </label>
+    </div>
+    <div class="form-group" style="clear:left;">
+        <input type="Submit" id="signup-form-submit-button" class="btn btn-success btn-block" value="Cadastrar" >
+    </div>
+    <div class="form-group login-service-links">
+        <a href="/user/forgotpassword" class="col-sm-6">Resetar Senha</a>
+        <a href="/login" class="col-sm-6" style="text-align:right;">Login</a>
+    </div>
+</form>
+<style>
+    body {
+        background-image: url(//cdn.onyximports.com.br/img/home/city-wallpaperbw.jpg);
+    }
+</style>
