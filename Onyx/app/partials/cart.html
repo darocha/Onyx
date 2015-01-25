@@ -1,0 +1,17 @@
+<div ng-controller="CartCtrl">
+
+
+    <h3>Your Shopping Cart</h3>
+
+    <ngcart-cart></ngcart-cart>
+
+    <a class="btn btn-lg btn-primary" ng-click="checkout()">Checkout</a>
+
+    <hr/>
+    <div ng-show="summary">
+        <h4>Summary</h4>
+        <pre> {{ summary |json}}</pre>
+    </div>
+
+</div>
+

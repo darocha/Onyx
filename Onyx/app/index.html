@@ -1,0 +1,313 @@
+﻿<!doctype html>
+<html lang="en" ng-app="phonecatApp" ng-controller="MainCtrl" flow-init>
+<head>
+  <meta charset="utf-8">
+  <title>Onyx Imports</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <link type="text/css" rel="stylesheet" href="css/demo.css" />
+  <link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css" />
+
+  <script src="bower_components/jquery/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+
+  <script src="js/angular-ui-router.min.js"></script>
+  <script src="js/modernizr-2.6.2.js"></script>
+  <script src="js/jquery.mmenu.min.all.js"></script>
+  <script src="js/respond.min.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/flow.js"></script>
+  <script src="js/ng-flow.js"></script>
+  <script src="js/ngCart.min.js"></script>
+  <script src="js/app.js"></script>
+  
+  <script src="js/directives.js"></script>
+
+  
+  
+  <script type="text/javascript">
+  
+     jQuery(function() {
+        jQuery('nav#menu').mmenu({dragOpen: true});
+
+        var $menu = jQuery('nav#menu'),
+          $html = jQuery('html, body');
+          
+      });
+     
+  </script>
+
+
+
+
+<!--  TEMPALATES -->
+<!--  TEMPALATES -->
+<!--  TEMPALATES -->
+
+<script type="text/ng-template" id="template/ngCart/summary.html">
+    
+      <div class="col-md-2" style="display:none;">
+            <svg version="1.1"  class="icon" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" xml:space="preserve">
+              <path d="M27.715,10.48l-2.938,6.312c-0.082,0.264-0.477,0.968-1.318,0.968H11.831
+                c-0.89,0-1.479-0.638-1.602-0.904l-2.048-6.524C7.629,8.514,8.715,7.933,9.462,7.933c0.748,0,14.915,0,16.805,0
+                C27.947,7.933,28.17,9.389,27.715,10.48L27.715,10.48z M9.736,9.619c0.01,0.061,0.026,0.137,0.056,0.226l1.742,6.208
+                c0.026,0.017,0.058,0.028,0.089,0.028h11.629l2.92-6.27c0.025-0.073,0.045-0.137,0.053-0.192H9.736L9.736,9.619z M13.544,25.534
+                c-0.819,0-1.482-0.662-1.482-1.482s0.663-1.484,1.482-1.484c0.824,0,1.486,0.664,1.486,1.484S14.369,25.534,13.544,25.534
+                L13.544,25.534z M23.375,25.534c-0.82,0-1.482-0.662-1.482-1.482s0.662-1.484,1.482-1.484c0.822,0,1.486,0.664,1.486,1.484
+                S24.197,25.534,23.375,25.534L23.375,25.534z M24.576,21.575H13.965c-2.274,0-3.179-2.151-3.219-2.244
+                c-0.012-0.024-0.021-0.053-0.028-0.076c0,0-3.56-12.118-3.834-13.05c-0.26-0.881-0.477-1.007-1.146-1.007H2.9
+                c-0.455,0-0.82-0.364-0.82-0.818s0.365-0.82,0.82-0.82h2.841c1.827,0,2.4,1.103,2.715,2.181
+                c0.264,0.898,3.569,12.146,3.821,12.999c0.087,0.188,0.611,1.197,1.688,1.197h10.611c0.451,0,0.818,0.368,0.818,0.818
+                C25.395,21.21,25.027,21.575,24.576,21.575L24.576,21.575z"/>
+        </svg>
+      </div>
+      <div class="col-md-6" style="line-height: 1.2em; font-size: 0.5em; width: auto; padding: 3px 15px; text-align: right;">{{ ngCart.totalItems() }}
+          <ng-pluralize count="ngCart.totalItems()" when="{1: 'item', 'other':'items'}"></ng-pluralize>
+          <br/>{{ ngCart.totalCost() | currency }}
+      </div>
+    
+</script>
+
+
+<script type="text/ng-template" id="template/ngCart/cart.html">
+    <div class="alert alert-warning" role="alert" ng-show="ngCart.totalItems() === 0">
+        Your cart is empty
+    </div>
+
+    <div class="table-responsive col-lg-12" ng-show="ngCart.totalItems() > 0">
+
+        <table class="table table-striped ngCart cart">
+
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Quantity</th>
+                <th>Amount</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr ng-show="ngCart.getTax()">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Tax ({{ ngCart.getCart().tax }}%):</th>
+                <th>{{ ngCart.getTax() | currency }}</th>
+            </tr>
+            <tr ng-show="ngCart.getShipping()">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Shipping:</th>
+                <th>{{ ngCart.getShipping() | currency }}</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Total:</th>
+                <th>{{ ngCart.totalCost() | currency }}</th>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr ng-repeat="item in ngCart.getCart().items track by $index">
+                <td><span ng-click="ngCart.removeItem($index)" class="glyphicon glyphicon-remove"></span></td>
+                <td>{{ item.getName() }}</td>
+                <td><span class="glyphicon glyphicon-minus" ng-class="{'disabled':item.getQuantity()==1}"
+                          ng-click="item.setQuantity(-1, true)"></span>&nbsp;&nbsp;
+                    {{ item.getQuantity() | number }}&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-plus" ng-click="item.setQuantity(1, true)"></span></td>
+                <td>{{ item.getPrice() | currency}}</td>
+                <td>{{ item.getTotal() | currency }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <style>
+        .ngCart.cart span[ng-click] {
+            cursor: pointer;
+        }
+
+        .ngCart.cart .glyphicon.disabled {
+            color: #aaa;
+        }
+    </style>
+</script>
+
+<script type="text/ng-template" id="template/ngCart/addtocart.html">
+    <div ng-hide="attrs.id">
+        <a class="btn btn-lg btn-primary" ng-disabled="true" ng-transclude></a>
+
+    </div>
+    <div ng-show="attrs.id">
+        <div ng-hide="inCart()">
+            <a class="btn btn-lg btn-primary"
+               ng-click="ngCart.addItem(id, name, price, quantity, data)"
+               ng-transclude></a>
+        </div>
+        <div class="alert alert-info" ng-show="inCart()">
+            This item is in your cart
+        </div>
+
+    </div>
+</script>
+
+
+
+  <base href="/">
+
+</head>
+<body flow-prevent-drop
+      flow-drag-enter="style={border: '5px solid green'}"
+      flow-drag-leave="style={}"
+      ng-style="style" >
+
+<div id="page">
+
+      <div class="header">
+        <a href="#menu"></a>
+        <div id="pagetitle">{{Title}}</div>
+        
+
+        <a ui-sref="/cart" style="left: auto; right: 0px; background: none repeat scroll 0% 0% transparent; font-size: 1.5em; padding: 2px 10px; cursor: pointer; width: auto; min-width: 40px;" > <ngcart-summary></ngcart-summary><span class="glyphicon glyphicon-shopping-cart" ></span></a>
+
+        
+
+        
+
+      </div>
+
+      <div id="content" class="content">
+  
+      <div ui-view></div>
+
+      <div class="view-container" style="display:none;" >
+            <div ng-view class="view-frame"></div>
+
+
+  <div class="container">
+        <h1>Flow Basic ASP.NET Example</h1>
+        <hr class="soften" />
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Inputs:</h2>
+
+                <input type="file" flow-btn />
+                <input type="file" flow-btn flow-directory ng-show="$flow.supportDirectory" />
+            </div>
+            <div class="col-md-6">
+                <h2>Buttons:</h2>
+
+                <span class="btn" flow-btn><i class="fa fa-file"></i>Upload File</span>
+                <span class="btn" flow-btn flow-directory ng-show="$flow.supportDirectory">
+                    <i class="fa fa-folder-open"></i>
+                    Upload Folder
+                </span>
+            </div>
+        </div>
+        <hr class="soften">
+
+        <h2>Transfers:</h2>
+
+        <p>
+            <a class="btn btn-sm btn-success" ng-click="$flow.resume()">Upload</a>
+            <a class="btn btn-sm btn-danger" ng-click="$flow.pause()">Pause</a>
+            <a class="btn btn-sm btn-info" ng-click="$flow.cancel()">Cancel</a>
+            <span class="label label-info">Size: {{$flow.getSize()}}</span>
+            <span class="label label-info">Is Uploading: {{$flow.isUploading()}}</span>
+        </p>
+        <table class="table table-hover table-bordered table-striped" flow-transfers>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Relative Path</th>
+                    <th>Unique Identifier</th>
+                    <th>#Chunks</th>
+                    <th>Progress</th>
+                    <th>Paused</th>
+                    <th>Uploading</th>
+                    <th>Completed</th>
+                    <th>Settings</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="file in transfers">
+                    <td>{{$index+1}}</td>
+                    <td>{{file.name}}</td>
+                    <td>{{file.size}}</td>
+                    <td>{{file.relativePath}}</td>
+                    <td>{{file.uniqueIdentifier}}</td>
+                    <td>{{file.chunks.length}}</td>
+                    <td>{{file.progress()}}</td>
+                    <td>{{file.paused}}</td>
+                    <td>{{file.isUploading()}}</td>
+                    <td>{{file.isComplete()}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn btn-xs btn-warning" ng-click="file.pause()" ng-hide="file.paused">
+                                Pause
+                            </a>
+                            <a class="btn btn-xs btn-warning" ng-click="file.resume()" ng-show="file.paused">
+                                Resume
+                            </a>
+                            <a class="btn btn-xs btn-danger" ng-click="file.cancel()">
+                                Cancel
+                            </a>
+                            <a class="btn btn-xs btn-info" ng-click="file.retry()" ng-show="file.error">
+                                Retry
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="soften" />
+
+        <div class="alert" flow-drop flow-drag-enter="class='alert-success'" flow-drag-leave="class=''"
+             ng-class="class">
+            Drag And Drop your file here
+        </div>
+    </div>
+            
+      </div>
+
+
+
+      </div>
+
+      <script type="text/ng-template" id="categoryTree">
+          <a ui-sref="{{ category.url }}" ng-click="SetTitle(category.title)" ui-sref-active="active" >{{ category.title }}</a>
+          <ul ng-if="category.categories">
+              <li ng-repeat="category in category.categories"  ng-include="'categoryTree'"></li>
+          </ul>
+      </script>
+
+      <nav id="menu">
+        <ul ng-controller="NavigationCtrl">
+              <li ng-repeat="category in categories" ng-include="'categoryTree'"></li>
+        </ul>
+      </nav>  
+      
+      
+    </div>
+
+
+  
+
+
+
+</body>
+</html>

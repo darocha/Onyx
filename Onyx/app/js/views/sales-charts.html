@@ -1,0 +1,19 @@
+﻿<h2>Sales Summary By Region</h2>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Region</th>
+            <th>Sales Director</th>
+            <th class="text-right">Gross Sales</th>
+            <th class="text-right">Target</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="region in salesSummaryByRegion">
+            <td>{{region.name}}</td>
+            <td>{{region.salesDirector}}</td>
+            <td class="text-right">{{region.grossSales | currency}}</td>
+            <td class="text-right">{{region.grossSalesTarget | currency}}</td>
+        </tr>
+    </tbody>
+</table>
