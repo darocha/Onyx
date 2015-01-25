@@ -1,0 +1,549 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="phonecatApp" ng-controller="MainCtrl" flow-init>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link href="favicon.ico" rel="shortcut icon" />
+
+    <title>@ViewBag.Title  {{Title}}</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+
+    <meta charset="utf-8">
+    <title>Onyx Imports</title>
+    <link rel="stylesheet" href="/app/bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/app/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/app/css/app.css">
+    <link rel="stylesheet" href="/app/css/nav.css">
+    <link rel="stylesheet" href="/app/css/animations.css">
+    <link type="text/css" rel="stylesheet" href="/app/css/jquery.mmenu.all.css" />
+    <link type="text/css" rel="stylesheet" href="/app/bower_components/angular-loading-bar/src/loading-bar.css" />
+
+    <script src="/app/bower_components/angular/angular.js"></script>
+    <script src="/app/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/app/bower_components/angular-route/angular-route.js"></script>
+    <script src="/app/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/app/bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="/app/bower_components/angular-loading-bar/src/loading-bar.js"></script>
+    <script src="/app/bower_components/angularjs-toaster/toaster.js"></script>
+    <script src="/app/bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+
+    <script src="/app/js/angular-ui-router.min.js"></script>
+    <script src="/app/js/jquery.mmenu.min.all.js"></script>
+    <script src="/app/js/animations.js"></script>
+    <script src="/app/js/controllers.js"></script>
+    <script src="/app/js/filters.js"></script>
+    <script src="/app/js/services.js"></script>
+    <script src="/app/js/flow.js"></script>
+    <script src="/app/js/ng-flow.js"></script>
+    <script src="/app/js/ng-iscroll.js"></script>
+    <script src="/app/js/ng-iscroll-slideshow.js"></script>
+    <script src="/app/js/ngCart.min.js"></script>
+    
+    <script src="/app/js/app.js"></script>
+    <script src="/app/js/services/user.js"></script>
+    <script src="/app/js/controllers/login.js"></script>
+    <script src="/app/js/controllers/signup.js"></script>
+    <script src="/app/js/controllers/logout.js"></script>
+    <script src="/app/js/controllers/salesdata.js"></script>
+    <script src="/app/js/controllers/protecteddata.js"></script>
+    <script src="/app/js/controllers/header.js"></script>
+
+    <script src="/app/js/directives.js"></script>
+
+    <script type="text/javascript">
+
+     jQuery(function() {
+         jQuery('nav#menu').mmenu({ dragOpen: true, classes: "mm-light2" });
+
+        var $menu = jQuery('nav#menu'),
+          $html = jQuery('html, body');
+
+
+        //setTimeout(SetupSlideShow, 1000);
+        //setTimeout(SetupIScroll, 600);
+
+        $("[data-toggle='tooltip']").tooltip({ html: true }); 
+         /*
+         $('[data-toggle="popover"]').popover({
+            trigger: 'hover',
+            placement: 'bottom',
+            container: 'body',
+            show: true,
+            delay: { "show": 100, "hide": 1000 },
+            content: "hello marcelo",
+            html: true,
+            trigger: 'click hover'
+
+        });
+         */
+
+        
+
+        function GetPopoverContent(el)
+        {
+            var id = el.attr('id');
+            switch (id) {
+                case 'nav-your-account': return $('#account_popover').html(); break;
+                case 'nav-wishlist': return $('#wishlist_popover').html(); break;
+                case 'nav-cart': return $('#cart_popover').html(); break;
+                case 'nav-your-prime': return $('#prime_popover').html(); break;
+                case 'nav-shop-all-button': return $('#categories_popover').html(); break;
+            }
+
+            return "";
+        }
+         /*
+        function JSONtoList(json)
+        {
+            if (json.length == 0) { return false; }
+
+            var li = '';
+            for (var i = 0; i < json.length; i++)
+            {
+                if (json[i].html && json[i].html != '') {
+                    li += '<li>' + json[i].html + '</li>';
+                }
+                else {
+                    li += '<li><a href="' + json[i].url + '" >' + json[i].label + '</a></li>';
+                }
+            }
+            
+            return '<ul class="list-unstyled">' + li + '</ul>';
+
+        }*/
+
+        var popovertimeout;
+
+        $('[data-toggle="popover"]').popover({
+            trigger: "manual", html: true, animation: false,
+            placement: 'bottom',
+            container: 'body',
+            show: true,
+            delay: { "show": 100, "hide": 1000 },
+            content: function () {return GetPopoverContent($(this)) },
+            html: true
+        }).on("mouseenter focus", function () {
+                var _this = this;
+
+                clearTimeout(popovertimeout);
+
+                popovertimeout = setTimeout(function () {
+                    $('.popover').hide(0);
+                    $(_this).popover("show");
+
+                }, 100);
+
+            }).on("mouseleave blur", function () {
+                var _this = this;
+
+                clearTimeout(popovertimeout);
+                popovertimeout = setTimeout(function () {
+                    if (!$(".popover:hover").length) {
+                        $('.popover').popover("hide");
+                    }
+                }, 600);
+            });
+
+        $('[data-toggle=popover]').on('hide.bs.popover', function () { $('.popover .arrow').css('left', '50%');  });
+        $('[data-toggle=popover]').on('shown.bs.popover', function () {
+            /*
+            var _this = this;
+            var menuPos = Math.floor($(_this).offset().left);
+            var downArrowPos = Math.floor($('.nav-down-arrow', _this).position().left);
+            var x = menuPos + downArrowPos;
+
+            var w = $('.popover').width();
+            
+            x = x - parseInt($('.popover').css('left'));
+
+            //$('.popover .arrow').css({ left: x + 10 });
+            */
+            
+        })
+
+
+
+        $("body").on("mouseleave",'.popover', function () {
+            clearTimeout(popovertimeout);
+            popovertimeout = setTimeout(function () {
+                $('.popover').popover("hide");
+            }, 1000);
+
+        }).on("mouseenter", '.popover', function () {
+            clearTimeout(popovertimeout);
+        });
+
+
+
+
+
+     });
+
+    
+
+    </script>
+
+
+    <!--  TEMPALATES -->
+    <!--  TEMPALATES -->
+    <!--  TEMPALATES -->
+
+    <script type="text/ng-template" id="template/ngCart/summary.html">
+
+        <div  style="display:none;">
+            <svg version="1.1" class="icon" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" xml:space="preserve">
+            <path d="M27.715,10.48l-2.938,6.312c-0.082,0.264-0.477,0.968-1.318,0.968H11.831
+                c-0.89,0-1.479-0.638-1.602-0.904l-2.048-6.524C7.629,8.514,8.715,7.933,9.462,7.933c0.748,0,14.915,0,16.805,0
+                C27.947,7.933,28.17,9.389,27.715,10.48L27.715,10.48z M9.736,9.619c0.01,0.061,0.026,0.137,0.056,0.226l1.742,6.208
+                c0.026,0.017,0.058,0.028,0.089,0.028h11.629l2.92-6.27c0.025-0.073,0.045-0.137,0.053-0.192H9.736L9.736,9.619z M13.544,25.534
+                c-0.819,0-1.482-0.662-1.482-1.482s0.663-1.484,1.482-1.484c0.824,0,1.486,0.664,1.486,1.484S14.369,25.534,13.544,25.534
+                L13.544,25.534z M23.375,25.534c-0.82,0-1.482-0.662-1.482-1.482s0.662-1.484,1.482-1.484c0.822,0,1.486,0.664,1.486,1.484
+                S24.197,25.534,23.375,25.534L23.375,25.534z M24.576,21.575H13.965c-2.274,0-3.179-2.151-3.219-2.244
+                c-0.012-0.024-0.021-0.053-0.028-0.076c0,0-3.56-12.118-3.834-13.05c-0.26-0.881-0.477-1.007-1.146-1.007H2.9
+                c-0.455,0-0.82-0.364-0.82-0.818s0.365-0.82,0.82-0.82h2.841c1.827,0,2.4,1.103,2.715,2.181
+                c0.264,0.898,3.569,12.146,3.821,12.999c0.087,0.188,0.611,1.197,1.688,1.197h10.611c0.451,0,0.818,0.368,0.818,0.818
+                C25.395,21.21,25.027,21.575,24.576,21.575L24.576,21.575z" />
+        </svg>
+        </div>
+        <span>
+            {{ ngCart.totalItems() }}
+            
+        </span>
+
+    </script>
+
+
+
+    <script type="text/ng-template" id="template/ngCart/cart.html">
+        <div class="alert alert-warning" role="alert" ng-show="ngCart.totalItems() === 0">
+            Your cart is empty
+        </div>
+
+        <div class="table-responsive col-lg-12" ng-show="ngCart.totalItems() > 0">
+
+            <table class="table table-striped ngCart cart">
+
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr ng-show="ngCart.getTax()">
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Tax ({{ ngCart.getCart().tax }}%):</th>
+                        <th>{{ ngCart.getTax() | currency }}</th>
+                    </tr>
+                    <tr ng-show="ngCart.getShipping()">
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Shipping:</th>
+                        <th>{{ ngCart.getShipping() | currency }}</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Total:</th>
+                        <th>{{ ngCart.totalCost() | currency }}</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr ng-repeat="item in ngCart.getCart().items track by $index">
+                        <td><span ng-click="ngCart.removeItem($index)" class="glyphicon glyphicon-remove"></span></td>
+                        <td>{{ item.getName() }}</td>
+                        <td>
+                            <span class="glyphicon glyphicon-minus" ng-class="{'disabled':item.getQuantity()==1}"
+                                  ng-click="item.setQuantity(-1, true)"></span>&nbsp;&nbsp;
+                            {{ item.getQuantity() | number }}&nbsp;&nbsp;
+                            <span class="glyphicon glyphicon-plus" ng-click="item.setQuantity(1, true)"></span>
+                        </td>
+                        <td>{{ item.getPrice() | currency}}</td>
+                        <td>{{ item.getTotal() | currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <style>
+            .ngCart.cart span[ng-click] {
+                cursor: pointer;
+            }
+
+            .ngCart.cart .glyphicon.disabled {
+                color: #aaa;
+            }
+        </style>
+    </script>
+
+    <script type="text/ng-template" id="template/ngCart/addtocart.html">
+        <div ng-hide="attrs.id">
+            <a class="btn btn-lg btn-primary" ng-disabled="true" ng-transclude></a>
+
+        </div>
+        <div ng-show="attrs.id">
+            <div ng-hide="inCart()">
+                <a class="btn btn-lg btn-primary"
+                   ng-click="ngCart.addItem(id, name, price, quantity, data)"
+                   ng-transclude></a>
+            </div>
+            <div class="alert alert-info" ng-show="inCart()">
+                This item is in your cart
+            </div>
+
+        </div>
+    </script>
+
+
+
+    <base href="/">
+
+</head>
+
+
+<body flow-prevent-drop
+          flow-drag-enter="style={border: '5px solid green'}"
+          flow-drag-leave="style={}"
+          ng-style="style">
+
+    <div id="page">
+
+        <div class="header onyxbar" >
+            
+            <div class="navigation-links">
+                <span><a class="logo" href="/"><img src="~/app/img/onyx_logo.png" /></a></span>
+                <span><a href="#menu" class="togglemenuicon"><i class="fa fa-bars fa-lg"></i></a></span>
+                <span><a href="/seu-onyx">Seu Onyx</a></span>
+                <span><a href="/ofertas-da-semana">Ofertas do Dia</a></span>
+                <span><a href="/vender">Cartao Presente</a></span>
+                <span><a href="/vender">Vender</a></span>
+                
+                <span ng-hide="user.isAuthenticated"><a ui-sref="/login">Login</a></span>
+                <span ng-show="user.isAuthenticated"><a ui-sref="/logout">Logout</a></span>
+
+                <span  style="float:right;"><a ui-sref="/"  style="padding:0;margin:0;"><img src="//cdn.onyximports.com.br/img/home/navigationbanner.png"></a></span>
+                
+            </div>
+
+            <div id="pagetitle" style="display:none;" ng-bind="Title"></div>
+
+            <div id="navbar" role="navigation" class="nav-subnav-container nav-skin-default nav-sprite-v1">
+
+
+                <div id="nav-bar-outer">
+
+                    <div id="nav-logo-borderfade"><div class="nav-fade-mask"></div><div class="nav-fade nav-sprite"></div></div>
+
+                    <div id="nav-bar-inner" class="nav-sprite">
+
+                        <div id="nav-bar-left">
+                            <a tabindex="1" data-toggle="popover"  data-nav-tabindex="9" id="nav-shop-all-button" href="/gp/site-directory/ref=nav_sad" class="nav_a nav-button-outer nav-menu-active" alt="Shop By Department">
+                                <span class="nav-button-title nav-button-line1">Shop by</span>
+                                <span class="nav-button-title nav-button-line2">Department<span class="nav-down-arrow"></span></span>
+                            </a>
+                        </div>
+
+                        <div id="nav-bar-right">
+
+
+                            <a data-toggle="popover" tabindex="1" data-nav-tabindex="13" id="nav-your-account" ui-sref="/login"  class="nav_a nav-button-outer nav-menu-active" alt="Your Account">
+                                <span id="nav-signin-title" class="nav-button-title nav-button-line1">
+                                    Hello.
+                                    <span id="nav-signin-text" class="nav-button-em" >{{user.isAuthenticated ? user.userName : 'Sign In'}}</span>
+                                </span>
+                                <span class="nav-button-title nav-button-line2">Your Account<span class="nav-down-arrow"></span></span>
+                            </a>
+
+                            
+                            <span class="nav-divider"></span>
+
+                            <a data-toggle="popover" tabindex="1" data-nav-tabindex="15" id="nav-cart" ui-sref="/cart" class="nav_a nav-button-outer nav-menu-active" alt="Shopping Cart">
+                                <span class="nav-button-title nav-button-line1" style="display:none;"><span class="fa fa-shopping-cart"></span></span>
+                                <span id="nav-cart-count" class="nav-cart-0"><ngcart-summary>0</ngcart-summary></span>
+                                <span class="nav-button-title nav-button-line2">
+                                    <span class="fa fa-shopping-cart" style="font-size: 2.6em; margin-top: 5px;"></span>
+                                    Cart<span class="nav-down-arrow"></span>
+                                </span>
+                                <span class="nav-cart-button nav-sprite"></span>
+
+
+
+                            </a>
+
+                            <span class="nav-divider"></span>
+                            <a data-toggle="popover" tabindex="1" data-nav-tabindex="16" id="nav-wishlist" href="/gp/registry/wishlist/ref=nav_wish_list" class="nav_a nav-button-outer nav-menu-active" alt="Wish List">
+                                <span class="nav-button-title nav-button-line1">Wish</span>
+                                <span class="nav-button-title nav-button-line2">List<span class="nav-down-arrow"></span></span>
+                            </a>
+                        </div>
+
+                        <div id="nav-bar-middle">
+                            <label id="nav-search-label" for="twotabsearchtextbox">
+                                Search
+                            </label>
+                            <form id="nav-searchbar" action="/s/ref=nb_sb_noss" method="get" name="site-search" role="search" accept-charset="utf-8"  class="nav-searchbar-inner">
+
+
+                                <div class="nav-submit-button nav-sprite">
+                                    <input type="submit" tabindex="1" data-nav-tabindex="12" value="search" class="nav-submit-input search-button" title="search">
+                                </div>
+
+                                <span style="width: auto;" id="nav-search-in" class="nav-sprite nav-facade-active">
+                                    <span style="width: auto; overflow: visible;" id="nav-search-in-content" data-value="search-alias=aps">
+                                        All
+                                    </span>
+                                    <span class="nav-down-arrow"></span>
+                                    <select style="top: 3px;" tabindex="1" data-nav-tabindex="10" class="searchSelect" data-nav-digest="PLWobzU+yaSSYg7adOgLcoK0H9Y" data-nav-selected="0" id="searchDropdownBox" name="url" title="Search in">
+                                        <option selected="selected" value="search-alias=aps">All Departments</option>
+                                        <option value="search-alias=instant-video">Amazon Instant Video</option>
+                                        <option value="search-alias=appliances">Appliances</option>
+                                        <option value="search-alias=mobile-apps">Apps &amp; Games</option>
+                                        <option value="search-alias=arts-crafts">Arts, Crafts &amp; Sewing</option>
+                                        <option value="search-alias=automotive">Automotive</option>
+                                        <option value="search-alias=baby-products">Baby</option>
+                                        <option value="search-alias=beauty">Beauty</option>
+                                        <option value="search-alias=stripbooks">Books</option>
+                                        <option value="search-alias=popular">CDs &amp; Vinyl</option>
+                                        <option value="search-alias=mobile">Cell Phones &amp; Accessories</option>
+                                        <option value="search-alias=fashion">Clothing, Shoes &amp; Jewelry</option>
+                                        <option value="search-alias=fashion-womens">&nbsp;&nbsp;&nbsp;Women</option>
+                                        <option value="search-alias=fashion-mens">&nbsp;&nbsp;&nbsp;Men</option>
+                                        <option value="search-alias=fashion-girls">&nbsp;&nbsp;&nbsp;Girls</option>
+                                        <option value="search-alias=fashion-boys">&nbsp;&nbsp;&nbsp;Boys</option>
+                                        <option value="search-alias=fashion-baby">&nbsp;&nbsp;&nbsp;Baby</option>
+                                        <option value="search-alias=collectibles">Collectibles &amp; Fine Art</option>
+                                        <option value="search-alias=computers">Computers</option>
+                                        <option value="search-alias=financial">Credit and Payment Cards</option>
+                                        <option value="search-alias=digital-music">Digital Music</option>
+                                        <option value="search-alias=electronics">Electronics</option>
+                                        <option value="search-alias=gift-cards">Gift Cards</option>
+                                        <option value="search-alias=grocery">Grocery &amp; Gourmet Food</option>
+                                        <option value="search-alias=hpc">Health &amp; Personal Care</option>
+                                        <option value="search-alias=garden">Home &amp; Kitchen</option>
+                                        <option value="search-alias=industrial">Industrial &amp; Scientific</option>
+                                        <option value="search-alias=digital-text">Kindle Store</option>
+                                        <option value="search-alias=fashion-luggage">Luggage &amp; Travel Gear</option>
+                                        <option value="search-alias=magazines">Magazine Subscriptions</option>
+                                        <option value="search-alias=movies-tv">Movies &amp; TV</option>
+                                        <option value="search-alias=mi">Musical Instruments</option>
+                                        <option value="search-alias=office-products">Office Products</option>
+                                        <option value="search-alias=lawngarden">Patio, Lawn &amp; Garden</option>
+                                        <option value="search-alias=pets">Pet Supplies</option>
+                                        <option value="search-alias=pantry">Prime Pantry</option>
+                                        <option value="search-alias=software">Software</option>
+                                        <option value="search-alias=sporting">Sports &amp; Outdoors</option>
+                                        <option value="search-alias=tools">Tools &amp; Home Improvement</option>
+                                        <option value="search-alias=toys-and-games">Toys &amp; Games</option>
+                                        <option value="search-alias=videogames">Video Games</option>
+                                        <option value="search-alias=wine">Wine</option>
+                                    </select>
+                                </span>
+
+                                <div class="nav-searchfield-width">
+                                    <div id="nav-iss-attach">
+                                        <input type="text" tabindex="1" data-nav-tabindex="11" id="twotabsearchtextbox" title="Search For" value="" name="field-keywords" autocomplete="off">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div><div id="nav-subnav-container" style="display: none;">
+                        <ul id="nav-subnav" style="display: none;" data-category="generic" data-digest="0">
+                            <li class="nav-subnav-item nav-category-button"><a href="#" class="nav_a"></a></li>
+                            <li class="nav-subnav-item"><a class="nav_a"></a></li>
+                            <li class="nav-subnav-item"><a class="nav_a"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+
+        <div id="content" class="content">
+
+            <div ui-view></div>
+            
+            <div id="#loadmoreitems" style="clear:both;" ></div>
+
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Onyx Imports Ltda</p>
+            </footer>
+
+        </div>
+
+        <script type="text/ng-template" id="categoryTree">
+            <a ui-sref="{{ category.url }}" ng-click="SetTitle(category.title)" ui-sref-active="active">{{ category.title }}</a>
+            <ul ng-if="category.categories">
+                <li ng-repeat="category in category.categories" ng-include="'categoryTree'"></li>
+            </ul>
+        </script>
+
+        <nav id="menu">
+            <ul ng-controller="NavigationCtrl">
+                <li ng-repeat="category in categories" ng-include="'categoryTree'"></li>
+            </ul>
+        </nav>
+
+
+    </div>
+        
+        @RenderBody()
+
+        
+       
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+
+
+
+    <div id="popovers" style="height:0px;width:0px;overflow:hidden;" >
+        <div id="account_popover">
+            <ul class="list-unstyled">
+                <li ng-hide="user.isAuthenticated"><a ui-sref="/login" href="/login" class="btn btn-primary btn-sm btn-block">Login</a></li>
+                <li ng-show="user.isAuthenticated"><a class="btn btn-primary btn-sm btn-block" ui-sref="logout" href="logout">Logout</a></li>
+                <li><a ui-sref="/sales" href="/sales">Minhas Vendas</a></li>
+                <li><a ui-sref="/compras" href="/compras">Minhas Compras</a></li>
+                <li><a ui-sref="/protected" href="/protected">Protected</a></li>
+            </ul>
+        </div>
+        <div id="wishlist_popover">
+            <ul class="list-unstyled">
+                <li><a ui-sref="/whishlists/create" href="/whishlists/create" >Criar Nova Lista</a></li>
+                <li><a ui-sref="/whishlists" href="/whishlists" >Minhas Listas</a></li>
+                <li><a ui-sref="/favorites" href="/favorites" >Meus Favoritos</a></li>
+            </ul>
+        </div>
+        <div id="cart_popover">
+            <ul class="list-unstyled">
+                <li><a ui-sref="/cart" href="/cart" >Cart Vazio</a></li>
+            </ul>
+        </div>
+        <div id="categories_popover">
+            <ul class="list-unstyled">
+                <li><a ui-sref="/whishlists/create" href="/whishlists/create">Meu Onyx</a></li>
+                <li><a ui-sref="/vendas" href="/vendas">Minhas Vendas</a></li>
+                <li><a ui-sref="/compras" href="/compras">Minhas Compras</a></li>
+                <li><a ui-sref="/compras" href="/compras">Rastrear Compras</a></li>
+            </ul>
+        </div>
+    </div>
+
+    </body>
+</html>
